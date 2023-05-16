@@ -1,1 +1,1 @@
-# analysis-of-Scanlan2016-replication-study
+This repository is part of a large replication project conducted by the Sports Science Replication Centre (https://ssreplicationcentre.com/). It includes the data and analyses for the replication study of "Passive recovery promotes superior performance and reduced physiological stress across different phases of short-distance repeated sprints" by Scalan and Madueno (2016).
