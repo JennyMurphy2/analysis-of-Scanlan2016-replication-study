@@ -6,9 +6,23 @@ library(MOTE)
 library(tidyverse)
 
 # Load data 
-active_data <- read_csv("active.csv")
-passive_data <- read_csv("passive.csv")
 
+active_data <- read_csv("active.csv") %>%
+  drop_na()
+
+passive_data <- read_csv("passive.csv") %>%
+  drop_na()
+
+# There was a data entry error and participant 16 anmd 17 were duplicated for the passive data
+# Therefore removing both these participants from the active and passive data
+
+active_data <- active_data %>%
+  filter(Participant != 16,
+         Participant != 17)
+
+passive_data <- passive_data %>%
+  filter(Participant != 16,
+         Participant != 17)
 # Active data ---------------
 ## Prepare active data --------------------------------------------------------------------
 
@@ -47,26 +61,32 @@ active_data1 <- active_data1 %>%
 active_decrement <- (((active_data1$total_time/(active_data1$best_sprint*10)) * 100) - 100) %>%
   as.data.frame() %>%
   rename(sprint_decrement = ".") %>%
-  mutate(Participant = c(1:18))
+  mutate(Participant = c(1:15, 18))
 
 # join the datasets
 active_sprint_decrement <- left_join(active_data1, active_decrement, by = "Participant") %>%
   as.data.frame()
 
-# Need to compute sd of the sprint decrement
-active_sd <- active_sprint_decrement %>%
-  summarise(sprint_dec_sd = sd(sprint_decrement, na.rm=TRUE),
-            total_time_sd = sd(total_time, na.rm = TRUE))
-
 ## Total sprint decrement descriptives --------------
-# Get the overall means and sd for total sprint decrement 
+
+# Get the overall means and sd 
+
 active_means <- active_sprint_decrement %>%
   select(where(is.numeric)) %>%
   select(-Participant) %>%
   colMeans(active_sprint_decrement$total_time) %>%
   as.data.frame() %>%
   rownames_to_column('variable') %>%
-  rename(mean = ".")
+  rename(mean = ".") %>%
+sapply(sd, na.rm = TRUE) 
+
+active_sd <- active_sprint_decrement %>%
+  select(where(is.numeric)) %>%
+  select(-Participant) %>%
+  sapply(sd, na.rm = TRUE)  %>%
+  as.data.frame() %>%
+  rownames_to_column('variable') %>%
+  rename(sd = ".") 
 
 
 # Passive data ---------------
@@ -107,16 +127,11 @@ passive_data1 <- passive_data1 %>%
 passive_decrement <- (((passive_data1$total_time/(passive_data1$best_sprint*10)) * 100) - 100) %>%
   as.data.frame() %>%
   rename(sprint_decrement = ".") %>%
-  mutate(Participant = c(1:18))
+  mutate(Participant = c(1:15, 18))
 
 # join the datasets
 passive_sprint_decrement <- left_join(passive_data1, passive_decrement, by = "Participant") %>%
   as.data.frame()
-
-# Need to compute sd of the sprint decrement
-passive_sd <- passive_sprint_decrement %>%
-  summarise(sprint_dec_sd = sd(sprint_decrement, na.rm=TRUE),
-            total_time_sd = sd(total_time, na.rm = TRUE))
 
 ## Total sprint decrement descriptives --------------
 # Get the overall means and sd for total sprint decrement 
@@ -127,6 +142,14 @@ passive_means <- passive_sprint_decrement %>%
   as.data.frame() %>%
   rownames_to_column('variable') %>%
   rename(mean = ".")
+
+passive_sd <- passive_sprint_decrement %>%
+  select(where(is.numeric)) %>%
+  select(-Participant) %>%
+  sapply(sd, na.rm = TRUE)  %>%
+  as.data.frame() %>%
+  rownames_to_column('variable') %>%
+  rename(sd = ".") 
 
 
 

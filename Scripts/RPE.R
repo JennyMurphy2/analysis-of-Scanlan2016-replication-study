@@ -6,8 +6,23 @@ library(MOTE)
 library(tidyverse)
 
 # Load data 
-active_data <- read_csv("active.csv")
-passive_data <- read_csv("passive.csv")
+
+active_data <- read_csv("active.csv") %>%
+  drop_na()
+
+passive_data <- read_csv("passive.csv") %>%
+  drop_na()
+
+# There was a data entry error and participant 16 anmd 17 were duplicated for the passive data
+# Therefore removing both these participants from the active and passive data
+
+active_data <- active_data %>%
+  filter(Participant != 16,
+         Participant != 17)
+
+passive_data <- passive_data %>%
+  filter(Participant != 16,
+         Participant != 17)
 
 # Active data descriptives --------------------------------------------------------------------
 

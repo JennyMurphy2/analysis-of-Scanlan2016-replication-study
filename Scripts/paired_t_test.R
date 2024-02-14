@@ -6,11 +6,26 @@ library(MOTE)
 library(tidyverse)
 
 # Load data --------------------------------------------------------------------
-active_data <- read_csv("active.csv")
-passive_data <- read_csv("passive.csv")
+active_data <- read_csv("active.csv") %>%
+  drop_na()
+
+passive_data <- read_csv("passive.csv") %>%
+  drop_na()
+
+# There was a data entry error and participant 16 anmd 17 were duplicated for the passive data
+# Therefore removing both these participants from the active and passive data
+
+active_data <- active_data %>%
+  filter(Participant != 16,
+         Participant != 17)
+
+passive_data <- passive_data %>%
+  filter(Participant != 16,
+         Participant != 17)
 
 # Prepare data ----------------
 # The original study summed the total sprint time - "...time was summed across the entire protocol"
+
 active_data_sum <- active_data %>%
   mutate(active = rowSums(select(active_data, sprint1_total_time, sprint2_total_time,
                                              sprint3_total_time, sprint4_total_time, sprint5_total_time,
@@ -26,7 +41,7 @@ passive_data_sum <- passive_data %>%
   select(Participant, passive) 
 
 combined_data <- inner_join(active_data_sum, passive_data_sum, by= "Participant") %>%
-  mutate(difference = active - passive)
+  mutate(difference = active - passive) 
 
 paired_data <- combined_data %>% 
   pivot_longer(cols = c("active", "passive"),
@@ -34,6 +49,20 @@ paired_data <- combined_data %>%
                values_to = "total_sprint_time")
 
 ## Calculate descriptives for data -------------------------------------
+
+
+# Demographic descriptives
+
+summary_dem <- passive_data %>%
+  summarise(count = n(),
+            mean_height = mean(Height),
+            sd_height = sd(Height),
+            mean_weight = mean(Weight),
+            sd_weight = sd(Weight),
+            mean_age = mean(Age),
+            sd_age = sd(Age)
+  )
+summary_dem
 
 # Replication descriptives
 
@@ -45,6 +74,7 @@ summary_rep <- paired_data %>%
   mutate(mean_diff = mean(combined_data$difference), 
          sd_diff = sd(combined_data$difference)
   )
+summary_rep
 
 #Original descriptives
 
@@ -138,7 +168,7 @@ rep_dav
 
 rep_test <- compare_smd(
   smd1 = rep_dav$d,
-  n1 = 18,
+  n1 = summary_rep$count[1],
   smd2 = 1.17,
   n2 = 9,
   paired = TRUE,
