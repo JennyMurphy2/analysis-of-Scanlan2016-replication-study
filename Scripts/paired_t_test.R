@@ -164,7 +164,6 @@ rep_dav
 
 
 ## Z-test (dav) --------
-# The original author confirmed they used Cohen's dav for their study so we are using dav for the z-test comparison 
 
 rep_test <- compare_smd(
   smd1 = rep_dav$d,
@@ -176,3 +175,13 @@ rep_test <- compare_smd(
 rep_test
 
 
+## Z-test (dz) --------
+
+rep_test <- compare_smd(
+  smd1 = rep_dz$d,
+  n1 = summary_rep$count[1],
+  smd2 = ori_dz$d,
+  n2 = 9,
+  paired = TRUE,
+  alternative = "less")
+rep_test
