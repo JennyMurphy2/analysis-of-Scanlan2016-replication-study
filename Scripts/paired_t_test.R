@@ -166,22 +166,22 @@ rep_dav
 ## Z-test (dav) --------
 
 rep_test <- compare_smd(
-  smd1 = rep_dav$d,
-  n1 = summary_rep$count[1],
-  smd2 = 1.17,
-  n2 = 9,
+  smd1 = 1.17,
+  n1 = 9,
+  smd2 = rep_dav$d,
+  n2 = summary_rep$count[1],
   paired = TRUE,
-  alternative = "less")
+  alternative = "greater")
 rep_test
 
 
 ## Z-test (dz) --------
 
 rep_test <- compare_smd(
-  smd1 = rep_dz$d,
-  n1 = summary_rep$count[1],
-  smd2 = ori_dz$d,
-  n2 = 9,
+  smd1 = ori_dz$d,
+  n1 = 9,
+  smd2 = rep_dz$d,
+  n2 = summary_rep$count[1],
   paired = TRUE,
-  alternative = "less")
+  alternative = "greater")
 rep_test
