@@ -137,10 +137,7 @@ results
 pval = 0.002/2 # for two-tailed
 quantile = 1 - pval
 
-ori_tval <- qt(quantile, df = 8, lower.tail = FALSE)
-
-ori_tval <- abs(ori_tval)
-ori_tval
+ori_tval <- qt(quantile, df = 8)
 
 # Confirming the reported effect size
 
