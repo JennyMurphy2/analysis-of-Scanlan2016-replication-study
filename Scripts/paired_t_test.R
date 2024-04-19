@@ -12,7 +12,7 @@ active_data <- read_csv("active.csv") %>%
 passive_data <- read_csv("passive.csv") %>%
   drop_na()
 
-# There was a data entry error and participant 16 anmd 17 were duplicated for the passive data
+# There was a data entry error and participant 16 and 17 were duplicated for the passive data
 # Therefore removing both these participants from the active and passive data
 
 active_data <- active_data %>%
@@ -160,12 +160,12 @@ rep_dav <- d.dep.t.avg(m1=summary_rep$mean[1], m2=summary_rep$mean[2],
 rep_dav
 
 
-## Z-test (dav) --------
+## Z-test (reported ES) --------
 
 rep_test <- compare_smd(
   smd1 = 1.17,
   n1 = 9,
-  smd2 = rep_dav$d,
+  smd2 = rep_dz$d,
   n2 = summary_rep$count[1],
   paired = TRUE,
   alternative = "greater")
