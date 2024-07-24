@@ -5,6 +5,8 @@ library(TOSTER)
 library(MOTE)
 library(tidyverse)
 
+set.seed(21)
+
 # Load data --------------------------------------------------------------------
 active_data <- read_csv("active.csv") %>%
   drop_na()
