@@ -33,8 +33,7 @@ active_RPE_mean <- colMeans(select(active_data, sprint1_RPE, sprint2_RPE, sprint
                                        sprint8_RPE, sprint9_RPE, sprint10_RPE)) %>%
   as.data.frame() %>%
   rownames_to_column('sprint') %>%
-  rename(active_mean = ".") %>%
-  mutate_if(is.numeric, round)
+  rename(active_mean = ".") 
 
 # Calculate the sd for each sprint for the active protocol data
 
@@ -56,8 +55,7 @@ passive_RPE_mean <- colMeans(select(passive_data, sprint1_RPE, sprint2_RPE, spri
                               sprint8_RPE, sprint9_RPE, sprint10_RPE)) %>%
   as.data.frame() %>%
   rownames_to_column('sprint') %>%
-  rename(passive_mean = ".") %>%
-  mutate_if(is.numeric, round)
+  rename(passive_mean = ".") 
 
 # Calculate the sd for each sprint for the passive protocol data
 
