@@ -125,9 +125,12 @@ combined_data %>%
 
 # T test ---------------------------------------------------
 
-results <- t.test(total_sprint_time ~ intervention, paired_data, 
-                  alternative = "two.sided", paired = TRUE, conf.level = 0.95) %>%
-  tidy()
+#results <- t.test(total_sprint_time ~ intervention, paired_data, 
+#                  alternative = "two.sided", paired = TRUE, conf.level = 0.95) %>%
+#  tidy()
+#results
+
+results <- t.test(combined_data$active, combined_data$passive, paired = TRUE)
 results
 
 # Analyse the replication ------
@@ -161,18 +164,16 @@ rep_dav <- d.dep.t.avg(m1=summary_rep$mean[1], m2=summary_rep$mean[2],
                        n=summary_rep$count[1], a = 0.05)
 rep_dav
 
-
 ## Z-test (reported ES) --------
 
 rep_test <- compare_smd(
   smd1 = 1.17,
   n1 = 9,
-  smd2 = rep_dz$d,
+  smd2 = rep_dav$d,
   n2 = summary_rep$count[1],
   paired = TRUE,
   alternative = "greater")
 rep_test
-
 
 ## Z-test (dz) --------
 
