@@ -177,11 +177,11 @@ rep_test
 
 ## Z-test (dz) --------
 
-rep_test <- compare_smd(
+rep_test_dz <- compare_smd(
   smd1 = ori_dz$d,
   n1 = 9,
   smd2 = rep_dz$d,
   n2 = summary_rep$count[1],
   paired = TRUE,
   alternative = "greater")
-rep_test
+rep_test_dz
